@@ -13,7 +13,7 @@ class Solution:
             
             anagrams[tuple(chars_count)].append(st)
             
-        return [word_list for key, word_list in anagrams.items()]
+        return [word_list for _, word_list in anagrams.items()]
     
 sol = Solution()
 in1 = ["act","pots","tops","cat","stop","hat"]
