@@ -3,35 +3,32 @@ from typing import List
 from collections import defaultdict
 
 class Solution:
-    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        # topological sort
-        adj_list = defaultdict(list)
-        UNVISITED, VISITING, VISITED = 0, 1, 2
-        states = [UNVISITED] * numCourses
-        order = []
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+
+        pre = defaultdict(list)
+
+        for course, p in prerequisites:
+            pre[course].append(p)
         
-        for a, b in prerequisites:
-            adj_list[a].append(b)
-                
-        def dfs(i):
-            if states[i] == VISITING:
-                return False
-            if states[i] == VISITED:
+        taken = set()
+
+        def dfs(course):
+            if not pre[course]:
                 return True
             
-            states[i] = VISITING
+            if course in taken:
+                return False
             
-            for nei in adj_list[i]:
-                if not dfs(nei):
-                    return False
+            taken.add(course)
+
+            for p in pre[course]:
+                if not dfs(p): return False
             
-            states[i] = VISITED
-            order.append(i)
+            pre[course] = []
             return True
-                
-        for i in range(numCourses):
-            if not dfs(i):
-                return []
         
-        return order
-                
+        for course in range(numCourses):
+            if not dfs(course):
+                return False
+
+        return True
